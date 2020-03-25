@@ -9,17 +9,17 @@ Retrieve sea ice type from corrected Sentinel-1 SAR with convolutional neural ne
 
 3. Run thermal noise, texture noise and angular corrections
 
-`docker run --rm -it -v /path/to/s1/files:/data s1_correction.py /data/S1B_EW_GRDM_1SDH_20200323T053203_20200323T053303_020815_027780_8729.zip /data/S1B_EW_GRDM_1SDH_20200323T053203.tif`
+```
+docker run --rm -it -v /path/to/s1/files:/data s1_correction.py /data/S1B_EW_GRDM_1SDH_20200323T053203_20200323T053303_020815_027780_8729.zip /data/S1B_EW_GRDM_1SDH_20200323T053203.tif
+```
 
 4. Run the ice type algorithm (mounted directory names can be anything)
 
 ```
-
 docker run --rm -it \
     -v /path/to/cnn/file:/cnn \
     -v /path/to/s1/files:/data \
     get_icetype.py /cnn/cnn_weights.hdf5 /data/S1B_EW_GRDM_1SDH_20200323T053203.tif /data/S1B_EW_GRDM_1SDH_20200323T053203_icetype.tif
-
 ```
 
 ### Installation and usage on Linux using conda
@@ -35,8 +35,12 @@ conda install tensorflow=2.1.0
 ```
 3. Run thermal noise, texture noise and angular corrections
 
-`s1_correction.py S1B_EW_GRDM_1SDH_20200323T053203_20200323T053303_020815_027780_8729.zip S1B_EW_GRDM_1SDH_20200323T053203.tif`
+```
+s1_correction.py S1B_EW_GRDM_1SDH_20200323T053203_20200323T053303_020815_027780_8729.zip S1B_EW_GRDM_1SDH_20200323T053203.tif
+```
 
 4. Run ice type algorithm
 
-`./get_icetype.py cnn_weights.hdf5 S1B_EW_GRDM_1SDH_20200323T053203.tif S1B_EW_GRDM_1SDH_20200323T053203_icetype.tif`
+```
+./get_icetype.py cnn_weights.hdf5 S1B_EW_GRDM_1SDH_20200323T053203.tif S1B_EW_GRDM_1SDH_20200323T053203_icetype.tif
+```
