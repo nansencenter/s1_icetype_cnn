@@ -1,0 +1,4 @@
+name: s1icetype
+dependencies:
+  - gdal
+  - tensorflow=2.1.0
