@@ -1,0 +1,6 @@
+*.SAFE
+*.tif
+*.zip
+*.npz
+*.npy
+*.hdf5

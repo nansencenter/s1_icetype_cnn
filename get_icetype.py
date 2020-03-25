@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import argparse
-import importlib
+import json
 import os
 import sys
 
@@ -118,13 +118,12 @@ def create_ice_chart(ice_pro, model_filename):
         Explanation of ice type values
 
     """
-    meta_filename = model_filename.replace('.hdf5', '_meta.py')
-    if os.path.exists(meta_filename):
-        meta_module_name = os.path.splitext(os.path.basename(meta_filename))[0]
-        meta_module = importlib.import_module(meta_module_name)
-        metadata = meta_module.metadata
+    json_filename = model_filename.replace('.hdf5', '.json')
+    if os.path.exists(json_filename):
+        with open(json_filename, 'rt') as f:
+            metadata = json.loads(f.read())
     else:
-        metadata = 'Unknown'
+        metadata = {'description': 'unknown'}
     return np.argmax(ice_pro, axis=2), np.max(ice_pro, axis=2), metadata
 
 def prepare_gcps(ds, step):
@@ -176,10 +175,8 @@ def export_geotiff(dst_filename, ds, ice_map, pro_map, step, metadata):
     gcps = prepare_gcps(ds, step)
     dst_ds.SetGCPs(gcps, ds.GetGCPProjection())
     dst_ds.GetRasterBand(1).WriteArray(ice_map)
-    dst_ds.GetRasterBand(1).SetMetadata({
-        'short_name': 'ice_type',
-        'description': metadata
-    })
+    dst_ds.GetRasterBand(1).SetMetadata(metadata)
+    dst_ds.GetRasterBand(1).SetMetadataItem('short_name', 'ice_type')
     dst_ds.GetRasterBand(2).WriteArray((pro_map*100).astype('int8'))
     dst_ds.GetRasterBand(2).SetMetadataItem('short_name', 'ice_type_probability')
     dst_ds = None
