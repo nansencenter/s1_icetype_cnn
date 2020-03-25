@@ -31,7 +31,6 @@ docker run --rm -it \
 ```
 conda activate s1denoise
 conda install tensorflow=2.1.0
-
 ```
 3. Run thermal noise, texture noise and angular corrections
 
