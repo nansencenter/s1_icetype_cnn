@@ -97,7 +97,8 @@ def apply_cnn(cnn_filename, data, step):
         inp = np.array(inp)
         s0m = inp[:,:,:,0].mean(axis=(1,2))
         gpi = np.where(np.isfinite(s0m))[0]
-        ice_pro[i, gpi] = model.predict(inp[gpi])
+        if gpi.size > 0:
+            ice_pro[i, gpi] = model.predict(inp[gpi])
     return ice_pro
 
 def create_ice_chart(ice_pro, cnn_filename):
