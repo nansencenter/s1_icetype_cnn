@@ -1,6 +1,15 @@
 # s1_icetype_cnn
 Retrieve sea ice type from corrected Sentinel-1 SAR with convolutional neural networks
 
+### Run the example Jupyter Notebook
+
+1. Start the official Tensorflow Docker container:
+```
+docker run -v $PWD:/tf --rm -it -p 8888:8888  tensorflow/tensorflow:latest-jupyter
+```
+2. Open the provided URL in a browser and open the notebook "cnn_for_sea_ice_types.ipynb"
+3. Execute the cells
+
 ### Installation and usage on any platform using Docker
 
 1. Build image **s1denoised** as explained here: https://github.com/nansencenter/sentinel1denoised/
