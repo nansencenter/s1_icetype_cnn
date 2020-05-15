@@ -1,5 +1,5 @@
-# s1_icetype_cnn
-Retrieve sea ice type from corrected Sentinel-1 SAR with convolutional neural networks
+# s1_icetype_cnn-1.1
+Retrieve sea ice types from corrected Sentinel-1 SAR with convolutional neural networks.
 
 ### Run the example Jupyter Notebook
 
