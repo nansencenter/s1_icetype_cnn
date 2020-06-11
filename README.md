@@ -19,7 +19,12 @@ docker run -v $PWD:/tf --rm -it -p 8888:8888  tensorflow/tensorflow:latest-jupyt
 3. Run thermal noise, texture noise and angular corrections
 
 ```
-docker run --rm -it -v /path/to/s1/files:/data s1_correction.py /data/S1B_EW_GRDM_1SDH_20200323T053203_20200323T053303_020815_027780_8729.zip /data/S1B_EW_GRDM_1SDH_20200323T053203.tif
+docker run --rm -it \
+    -v /path/to/s1/files:/data \
+    s1icetype \
+    s1_correction.py \
+    /data/S1B_EW_GRDM_1SDH_20200323T053203_20200323T053303_020815_027780_8729.zip \
+    /data/S1B_EW_GRDM_1SDH_20200323T053203.tif
 ```
 
 4. Run the ice type algorithm (mounted directory names can be anything)
@@ -28,7 +33,9 @@ docker run --rm -it -v /path/to/s1/files:/data s1_correction.py /data/S1B_EW_GRD
 docker run --rm -it \
     -v /path/to/cnn/file:/cnn \
     -v /path/to/s1/files:/data \
-    get_icetype.py /cnn/cnn_weights.hdf5 /data/S1B_EW_GRDM_1SDH_20200323T053203.tif /data/S1B_EW_GRDM_1SDH_20200323T053203_icetype.tif
+    s1icetype \
+    get_icetype.py /cnn/cnn_weights.hdf5 \
+    /data/S1B_EW_GRDM_1SDH_20200323T053203.tif /data/S1B_EW_GRDM_1SDH_20200323T053203_icetype.tif
 ```
 
 ### Installation and usage on Linux using conda
