@@ -84,7 +84,11 @@ def apply_cnn(cnn_filename, data, step):
 
     """
     model = load_model(cnn_filename, custom_objects={'recall':recall})
-    inp_size = model.layers[1].get_config()['batch_input_shape'][1]
+    for layer in model.layers:
+        cfg = layer.get_config()
+        if 'batch_input_shape' in cfg:
+            inp_size = cfg['batch_input_shape'][1]
+            break
     out_size = model.layers[-1].get_config()['units']
 
     rows = range(0, data[0].shape[0]-inp_size, step)
@@ -150,7 +154,7 @@ def prepare_gcps(ds, step):
         gcp.GCPLine /= step
     return gcps
 
-def export_geotiff(dst_filename, ds, ice_map, pro_map, step, metadata):
+def export_geotiff(dst_filename, ds, ice_map, pro_map, step, metadata, options=('COMPRESS=LZW',)):
     """ Export ice chart into GeoTiff file
 
     Parameters
@@ -167,6 +171,8 @@ def export_geotiff(dst_filename, ds, ice_map, pro_map, step, metadata):
         Step to read HH/HV sub-images
     metadata : dict
         Metadata for the ice_type band
+    options: tuple of strings
+        Options for GDAL GTiff driver
 
     """
     driver = gdal.GetDriverByName("GTiff")
@@ -174,7 +180,8 @@ def export_geotiff(dst_filename, ds, ice_map, pro_map, step, metadata):
         xsize=ice_map.shape[1],
         ysize=ice_map.shape[0],
         bands=2,
-        eType=gdal.GDT_Byte)
+        eType=gdal.GDT_Byte,
+        options=list(options))
     gcps = prepare_gcps(ds, step)
     dst_ds.SetGCPs(gcps, ds.GetGCPProjection())
     dst_ds.GetRasterBand(1).WriteArray(ice_map)
